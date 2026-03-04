@@ -1,0 +1,1728 @@
+/*
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    TUTORIAL COMPLETO DE CSS                                   ║
+║                    Web Store Estilo Mercado Libre                             ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+LECCIÓN 1: ¿QUÉ ES CSS?
+========================
+CSS (Cascading Style Sheets) es el lenguaje para dar estilo a documentos HTML.
+Controla: colores, fuentes, espaciado, layout, animaciones, responsive design.
+
+LA "CASCADA" EN CSS:
+Los estilos se aplican en orden de ESPECIFICIDAD (de menor a mayor):
+1. Estilos del navegador (user agent)
+2. Estilos externos (<link>)
+3. Estilos internos (<style> en <head>)
+4. Estilos inline (style="...")
+5. !important (evitar usar)
+
+SINTAXIS BÁSICA:
+selector {
+  propiedad: valor;
+  propiedad: valor;
+}
+
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 2: TIPOS DE SELECTORES
+════════════════════════════════════════════════════════════════════════════════
+
+1. SELECTOR DE ELEMENTO (Type selector)
+   p { }           → Todos los párrafos
+   header { }      → Todos los headers
+
+2. SELECTOR DE CLASE (Class selector) - EL MÁS USADO
+   .mi-clase { }   → Elementos con class="mi-clase"
+   
+3. SELECTOR DE ID (ID selector)
+   #mi-id { }      → Elemento con id="mi-id"
+   
+4. SELECTOR UNIVERSAL
+   * { }           → TODOS los elementos
+
+5. SELECTORES DE ATRIBUTO
+   [type="text"] { }     → input type="text"
+   [data-active] { }     → Elementos con ese atributo
+   [href^="https"] { }   → href que EMPIEZA con "https"
+   [href$=".pdf"] { }    → href que TERMINA con ".pdf"
+   [href*="google"] { }  → href que CONTIENE "google"
+
+6. PSEUDO-CLASES (estados)
+   :hover          → Mouse encima
+   :focus          → Tiene foco
+   :active         → Siendo clickeado
+   :visited        → Enlace visitado
+   :first-child    → Primer hijo
+   :last-child     → Último hijo
+   :nth-child(n)   → Hijo número n
+   :nth-child(odd) → Hijos impares
+   :nth-child(even)→ Hijos pares
+   :not(selector)  → Negación
+
+7. PSEUDO-ELEMENTOS (partes del elemento)
+   ::before        → Contenido antes
+   ::after         → Contenido después
+   ::first-letter  → Primera letra
+   ::first-line    → Primera línea
+   ::placeholder   → Texto placeholder de inputs
+
+8. COMBINADORES
+   .a .b { }       → b DESCENDIENTE de a (cualquier nivel)
+   .a > .b { }     → b HIJO DIRECTO de a
+   .a + .b { }     → b HERMANO ADYACENTE de a (inmediato siguiente)
+   .a ~ .b { }     → b HERMANO GENERAL de a (cualquier siguiente)
+
+ESPECIFICIDAD (de menor a mayor):
+- Elemento:     0,0,0,1  (p, div, header)
+- Clase:        0,0,1,0  (.clase)
+- ID:           0,1,0,0  (#id)
+- Inline style: 1,0,0,0  (style="...")
+- !important:   gana siempre (¡evitar!)
+
+Ejemplo: .header .nav-link = 0,0,2,0 (dos clases)
+
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 3: METODOLOGÍA BEM (Block Element Modifier)
+════════════════════════════════════════════════════════════════════════════════
+
+BEM es una convención de nombres para clases CSS que mejora:
+- Legibilidad del código
+- Mantenibilidad
+- Evita conflictos de especificidad
+
+ESTRUCTURA:
+- Block (Bloque):    Componente independiente → .header
+- Element (Elemento): Parte del bloque        → .header__logo
+- Modifier (Modificador): Variación           → .header__logo--small
+
+SEPARADORES:
+- __ (doble guion bajo): Separa bloque de elemento
+- -- (doble guion):      Separa elemento de modificador
+
+EJEMPLOS:
+.card { }                    → Bloque
+.card__title { }             → Elemento: título de la card
+.card__image { }             → Elemento: imagen de la card
+.card--featured { }          → Modificador: card destacada
+.card__title--large { }      → Modificador: título grande
+
+REGLAS BEM:
+1. Los elementos NO se anidan (.card__header__title ❌)
+2. Los bloques son independientes y reutilizables
+3. Los modificadores se usan JUNTO con la clase base:
+   <div class="card card--featured"> ✓
+
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 4: MODELO DE CAJA (Box Model)
+════════════════════════════════════════════════════════════════════════════════
+
+TODO elemento HTML es una "caja" con:
+
+┌──────────────────────────────────────────┐
+│             MARGIN (exterior)             │
+│  ┌────────────────────────────────────┐  │
+│  │         BORDER (borde)             │  │
+│  │  ┌──────────────────────────────┐  │  │
+│  │  │      PADDING (interior)      │  │  │
+│  │  │  ┌────────────────────────┐  │  │  │
+│  │  │  │      CONTENT           │  │  │  │
+│  │  │  │  (contenido/texto)     │  │  │  │
+│  │  │  └────────────────────────┘  │  │  │
+│  │  └──────────────────────────────┘  │  │
+│  └────────────────────────────────────┘  │
+└──────────────────────────────────────────┘
+
+PROPIEDADES:
+- width/height:  Ancho y alto del CONTENT
+- padding:       Espacio INTERIOR (entre content y border)
+- border:        Borde del elemento
+- margin:        Espacio EXTERIOR (entre elementos)
+
+BOX-SIZING:
+- content-box (default): width = solo content
+  → Ancho total = width + padding + border
+  
+- border-box (recomendado): width = content + padding + border
+  → Ancho total = width (más predecible)
+
+SHORTHAND (forma abreviada):
+margin: 10px;              → Todos los lados
+margin: 10px 20px;         → Vertical | Horizontal
+margin: 10px 20px 30px;    → Arriba | Horizontal | Abajo
+margin: 10px 20px 30px 40px; → Arriba | Derecha | Abajo | Izquierda (TRBL - clockwise)
+
+════════════════════════════════════════════════════════════════════════════════
+*/
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 5: RESET Y VARIABLES CSS
+════════════════════════════════════════════════════════════════════════════════
+
+CSS RESET:
+Los navegadores aplican estilos por defecto que varían entre ellos.
+Un "reset" normaliza estos estilos para consistencia.
+
+VARIABLES CSS (Custom Properties):
+- Definidas con -- prefix
+- Se acceden con var(--nombre)
+- Mejoran mantenibilidad (un cambio afecta todo)
+- Pueden heredarse y sobrescribirse
+*/
+
+/* 
+:root → Pseudo-clase que selecciona <html>
+Usamos :root para variables porque:
+1. Mayor especificidad que html { }
+2. Conveniente para variables globales
+*/
+:root {
+  /* 
+  Variables CSS (Custom Properties)
+  ═══════════════════════════════════════════════════════════════════════════
+  
+  SINTAXIS: --nombre-variable: valor;
+  
+  CONVENCIÓN DE NOMBRES:
+  --color-primary     → Colores principales
+  --font-family-base  → Tipografías
+  --spacing-md        → Espaciados
+  --border-radius-sm  → Bordes redondeados
+  */
+  
+  /* Colores de marca - Paleta estilo Mercado Libre */
+  --color-primary: #FFE600;           /* Amarillo ML */
+  --color-primary-dark: #F5D300;      /* Amarillo hover */
+  --color-secondary: #3483FA;         /* Azul ML */
+  --color-secondary-dark: #2968C8;    /* Azul hover */
+  
+  /* Colores de estado */
+  --color-success: #00A650;           /* Verde éxito */
+  --color-error: #F23D4F;             /* Rojo error */
+  --color-warning: #FF7733;           /* Naranja advertencia */
+  
+  /* Colores neutros */
+  --color-white: #FFFFFF;
+  --color-black: #333333;
+  --color-gray-100: #F5F5F5;          /* Fondos claros */
+  --color-gray-200: #EEEEEE;          /* Bordes, divisores */
+  --color-gray-300: #CCCCCC;
+  --color-gray-400: #999999;          /* Texto secundario */
+  --color-gray-500: #666666;          /* Texto normal */
+  --color-gray-600: #333333;          /* Texto principal */
+  
+  /* Tipografía */
+  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+                       Oxygen, Ubuntu, sans-serif;
+  --font-size-xs: 0.75rem;            /* 12px */
+  --font-size-sm: 0.875rem;           /* 14px */
+  --font-size-base: 1rem;             /* 16px */
+  --font-size-lg: 1.125rem;           /* 18px */
+  --font-size-xl: 1.25rem;            /* 20px */
+  --font-size-2xl: 1.5rem;            /* 24px */
+  --font-size-3xl: 2rem;              /* 32px */
+  
+  /* 
+  Espaciado (basado en escala de 4px)
+  ═══════════════════════════════════════════════════════════════════════════
+  Base: 4px. Multiplicamos: xs=4, sm=8, md=16, lg=24, xl=32, 2xl=48
+  Esto crea ritmo visual consistente
+  */
+  --spacing-xs: 0.25rem;              /* 4px */
+  --spacing-sm: 0.5rem;               /* 8px */
+  --spacing-md: 1rem;                 /* 16px */
+  --spacing-lg: 1.5rem;               /* 24px */
+  --spacing-xl: 2rem;                 /* 32px */
+  --spacing-2xl: 3rem;                /* 48px */
+  
+  /* Bordes y sombras */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+  --border-radius-full: 9999px;       /* Círculo perfecto */
+  
+  /* 
+  Sombras (Box Shadow)
+  ═══════════════════════════════════════════════════════════════════════════
+  SINTAXIS: offset-x offset-y blur spread color
+  - offset-x: Desplazamiento horizontal
+  - offset-y: Desplazamiento vertical
+  - blur: Radio de difuminado
+  - spread: Expansión de la sombra
+  - color: Color (generalmente negro semitransparente)
+  */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+  
+  /* Transiciones */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+  
+  /* Dimensiones máximas */
+  --container-max-width: 1200px;
+  --header-height: 120px;
+}
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+CSS RESET MODERNO
+════════════════════════════════════════════════════════════════════════════════
+
+En lugar de resetear TODO (como el antiguo Reset CSS de Eric Meyer),
+usamos un enfoque más moderno y selectivo.
+*/
+
+/* 
+SELECTOR UNIVERSAL + BOX-SIZING
+═══════════════════════════════════════════════════════════════════════════════
+
+* selecciona TODOS los elementos
+*::before y *::after incluyen los pseudo-elementos
+
+box-sizing: border-box hace que el padding y border
+estén INCLUIDOS en el width/height declarado.
+
+SIN border-box:
+  width: 100px + padding: 20px + border: 2px = 144px totales
+  
+CON border-box:
+  width: 100px (ya incluye padding y border) = 100px totales
+
+inherit: Hereda el valor del padre (asegura consistencia)
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 
+HTML y BODY
+═══════════════════════════════════════════════════════════════════════════════
+*/
+html {
+  /* 
+  scroll-behavior: smooth
+  ─────────────────────────────────────────────────────────────────────────────
+  Cuando se navega a un ancla (#seccion), el scroll es animado
+  en lugar de un salto brusco.
+  */
+  scroll-behavior: smooth;
+  
+  /* 
+  font-size: 16px es el estándar.
+  Usamos 16px como base y rem para escalado relativo.
+  1rem = 16px
+  */
+  font-size: 16px;
+}
+
+body {
+  /* 
+  font-family: Usamos nuestra variable CSS
+  var(--variable) → Accede al valor de la variable
+  */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--color-gray-600);
+  background-color: var(--color-gray-100);
+  
+  /* 
+  min-height: 100vh
+  ─────────────────────────────────────────────────────────────────────────────
+  vh = viewport height (altura de la ventana)
+  100vh = 100% de la altura visible del navegador
+  Asegura que el body siempre ocupe al menos toda la pantalla
+  */
+  min-height: 100vh;
+  
+  /* 
+  Mejoras tipográficas para renderizado más suave
+  */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 6: ELEMENTOS HTML RESET
+════════════════════════════════════════════════════════════════════════════════
+*/
+
+/* 
+IMÁGENES: Por defecto son inline, lo que causa espacios extraños
+*/
+img {
+  /* display: block elimina el espacio inferior de imágenes inline */
+  display: block;
+  
+  /* max-width: 100% evita que las imágenes se desborden de su contenedor */
+  max-width: 100%;
+  
+  /* height: auto mantiene la proporción (aspect ratio) */
+  height: auto;
+}
+
+/* 
+LISTAS: Quitamos los estilos por defecto
+*/
+ul, ol {
+  list-style: none;
+}
+
+/* 
+ENLACES: Quitamos subrayado y heredamos color
+*/
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 
+BOTONES: Reset de estilos del navegador
+═══════════════════════════════════════════════════════════════════════════════
+Los botones tienen muchos estilos por defecto que queremos controlar
+*/
+button {
+  /* 
+  border: none → Quita el borde por defecto
+  background: none → Quita el fondo gris por defecto
+  cursor: pointer → Muestra la manito al pasar el mouse
+  font: inherit → Hereda la fuente del padre (los botones tienen su propia)
+  */
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+/* 
+INPUTS: Reset y consistencia
+*/
+input, textarea {
+  border: 1px solid var(--color-gray-300);
+  font: inherit;
+  
+  /* 
+  outline: none
+  ─────────────────────────────────────────────────────────────────────────────
+  CUIDADO: Esto quita el indicador de foco por defecto.
+  SIEMPRE debemos agregar un estilo :focus alternativo para accesibilidad.
+  */
+  outline: none;
+}
+
+/* 
+Focus visible: Accesibilidad
+═══════════════════════════════════════════════════════════════════════════════
+:focus-visible se aplica solo cuando el foco es visible 
+(navegación con teclado), no al hacer clic.
+*/
+input:focus,
+textarea:focus,
+button:focus-visible,
+a:focus-visible {
+  /* 
+  outline: 2px solid color
+  ring: Técnica común para indicar foco
+  outline-offset: Separa el outline del borde del elemento
+  */
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 7: COMPONENTES BEM - HEADER
+════════════════════════════════════════════════════════════════════════════════
+
+Comenzamos a aplicar BEM en componentes reales.
+El Header es un BLOQUE independiente con múltiples ELEMENTOS.
+*/
+
+/* 
+BLOQUE: .header
+═══════════════════════════════════════════════════════════════════════════════
+*/
+.header {
+  /* 
+  background: gradiente suave amarillo (estilo ML)
+  
+  LINEAR-GRADIENT:
+  ─────────────────────────────────────────────────────────────────────────────
+  linear-gradient(dirección, color1, color2, ...)
+  
+  Direcciones:
+  - to bottom (default): De arriba hacia abajo
+  - to right: De izquierda a derecha
+  - to bottom right: Diagonal
+  - 45deg: Ángulo específico
+  */
+  background: linear-gradient(to bottom, var(--color-primary), var(--color-primary-dark));
+  
+  /* 
+  position: sticky
+  ─────────────────────────────────────────────────────────────────────────────
+  El elemento se comporta como relative hasta que el scroll
+  llega a 'top: 0', entonces se "pega" y se comporta como fixed.
+  
+  Diferencias:
+  - static: Posición normal (default)
+  - relative: Se puede mover con top/left pero ocupa su espacio
+  - absolute: Se posiciona relativo al ancestro positioned más cercano
+  - fixed: Se posiciona relativo al viewport (no scrollea)
+  - sticky: Híbrido entre relative y fixed
+  */
+  position: sticky;
+  top: 0;
+  
+  /* 
+  z-index: Orden de apilamiento
+  ─────────────────────────────────────────────────────────────────────────────
+  Elementos con mayor z-index aparecen "encima" de los de menor z-index.
+  Solo funciona en elementos con position != static
+  
+  Convención de valores:
+  - Contenido normal: 1-10
+  - Dropdowns, tooltips: 100-200
+  - Modales: 300-400
+  - Notificaciones: 500+
+  */
+  z-index: 100;
+  
+  /* Sombra sutil para separar del contenido */
+  box-shadow: var(--shadow-sm);
+}
+
+/* 
+ELEMENTO: .header__container
+═══════════════════════════════════════════════════════════════════════════════
+Contenedor interno que centra y limita el ancho del contenido
+*/
+.header__container {
+  /* 
+  DISPLAY: FLEX (Flexbox)
+  ═══════════════════════════════════════════════════════════════════════════
+  
+  Flexbox es un modelo de layout unidimensional (fila O columna).
+  Ideal para: navegaciones, centrado, distribución de espacio.
+  
+  TERMINOLOGÍA:
+  - Flex Container: El elemento con display: flex
+  - Flex Items: Los hijos directos del container
+  - Main Axis: Eje principal (horizontal por defecto)
+  - Cross Axis: Eje perpendicular (vertical por defecto)
+  
+  PROPIEDADES DEL CONTAINER:
+  - display: flex           → Activa flexbox
+  - flex-direction          → row | column | row-reverse | column-reverse
+  - justify-content         → Alineación en main axis
+  - align-items             → Alineación en cross axis
+  - flex-wrap               → nowrap | wrap (permite múltiples líneas)
+  - gap                     → Espacio entre items
+  
+  PROPIEDADES DE LOS ITEMS:
+  - flex-grow               → Cuánto puede crecer (0 = no crece)
+  - flex-shrink             → Cuánto puede encoger (1 = puede encoger)
+  - flex-basis              → Tamaño inicial
+  - flex                    → Shorthand: grow shrink basis
+  - align-self              → Sobrescribe align-items para un item
+  */
+  display: flex;
+  
+  /* 
+  align-items: center
+  ─────────────────────────────────────────────────────────────────────────────
+  Valores para align-items (cross axis):
+  - flex-start: Alinea al inicio
+  - flex-end: Alinea al final
+  - center: Centra verticalmente
+  - stretch: Estira para llenar (default)
+  - baseline: Alinea por línea de texto
+  */
+  align-items: center;
+  
+  /* 
+  justify-content: space-between
+  ─────────────────────────────────────────────────────────────────────────────
+  Valores para justify-content (main axis):
+  - flex-start: Items al inicio
+  - flex-end: Items al final
+  - center: Items centrados
+  - space-between: Primer item al inicio, último al final, resto distribuido
+  - space-around: Espacio igual alrededor de cada item
+  - space-evenly: Espacio igual entre todos
+  */
+  justify-content: space-between;
+  
+  /* 
+  gap: Espacio entre flex items
+  ─────────────────────────────────────────────────────────────────────────────
+  Más limpio que usar margin en los items individuales.
+  Funciona en Flexbox y Grid.
+  */
+  gap: var(--spacing-md);
+  
+  /* 
+  max-width + margin: auto → Centra horizontalmente con ancho máximo
+  
+  margin: valor auto → Centra horizontalmente (auto calcula márgenes iguales)
+  */
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+/* ELEMENTO: Logo */
+.header__logo {
+  flex-shrink: 0; /* No permite que el logo se encoja */
+}
+
+.header__logo-link {
+  display: flex;
+  align-items: baseline; /* Alinea por la línea base del texto */
+  gap: var(--spacing-xs);
+  
+  /* 
+  transition: Animación suave entre estados
+  ─────────────────────────────────────────────────────────────────────────────
+  SINTAXIS: transition: propiedad duración timing-function delay;
+  
+  timing-functions:
+  - ease: Lento-rápido-lento (default)
+  - linear: Velocidad constante
+  - ease-in: Empieza lento
+  - ease-out: Termina lento
+  - ease-in-out: Lento al inicio y final
+  - cubic-bezier(x1,y1,x2,y2): Curva personalizada
+  */
+  transition: transform var(--transition-fast);
+}
+
+.header__logo-link:hover {
+  /* 
+  transform: Transforma el elemento
+  ─────────────────────────────────────────────────────────────────────────────
+  - scale(1.05): Escala 5% más grande
+  - rotate(45deg): Rota 45 grados
+  - translateX(10px): Mueve 10px horizontalmente
+  - translateY(10px): Mueve 10px verticalmente
+  - skew(10deg): Inclina
+  
+  Se pueden combinar: transform: scale(1.1) rotate(5deg);
+  */
+  transform: scale(1.02);
+}
+
+.header__logo-text {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-secondary);
+}
+
+.header__logo-subtitle {
+  font-size: var(--font-size-lg);
+  font-weight: 400;
+  color: var(--color-gray-600);
+}
+
+/* ELEMENTO: Barra de búsqueda */
+.header__search {
+  /* 
+  flex: 1
+  ─────────────────────────────────────────────────────────────────────────────
+  Shorthand para flex-grow: 1, flex-shrink: 1, flex-basis: 0
+  Significa: "toma todo el espacio disponible"
+  
+  flex: 1 → Crece para llenar espacio
+  flex: 0 → No crece, mantiene su tamaño natural
+  flex: 2 → Crece el doble que flex: 1
+  */
+  flex: 1;
+  max-width: 600px;
+}
+
+.header__search-form {
+  display: flex;
+  
+  /* 
+  border-radius en contenedor + overflow: hidden
+  ─────────────────────────────────────────────────────────────────────────────
+  overflow: hidden oculta contenido que se desborda del contenedor.
+  Esto hace que los elementos hijos respeten el border-radius del padre.
+  */
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  
+  box-shadow: var(--shadow-sm);
+}
+
+.header__search-input {
+  /* flex: 1 para que ocupe todo el espacio disponible */
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  font-size: var(--font-size-base);
+  
+  /* 
+  min-width: 0 en flex items
+  ─────────────────────────────────────────────────────────────────────────────
+  Por defecto, los flex items tienen min-width: auto, lo que puede
+  causar que no se encojan correctamente. min-width: 0 lo soluciona.
+  */
+  min-width: 0;
+}
+
+.header__search-input::placeholder {
+  color: var(--color-gray-400);
+}
+
+.header__search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  transition: background-color var(--transition-fast);
+}
+
+.header__search-button:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+/* ELEMENTO: Navegación */
+.header__nav {
+  flex-shrink: 0;
+}
+
+.header__nav-list {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.header__nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast);
+  
+  /* 
+  white-space: nowrap
+  ─────────────────────────────────────────────────────────────────────────────
+  Previene que el texto se rompa en múltiples líneas.
+  */
+  white-space: nowrap;
+}
+
+.header__nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 
+MODIFICADOR: --cart (variación del nav-link)
+═══════════════════════════════════════════════════════════════════════════════
+BEM: El modificador se usa JUNTO con la clase base
+HTML: class="header__nav-link header__nav-link--cart"
+*/
+.header__nav-link--cart {
+  position: relative; /* Para posicionar el contador absolutamente */
+}
+
+/* 
+::after para el contador del carrito
+═══════════════════════════════════════════════════════════════════════════════
+content: attr(data-cart-count) → Lee el valor del atributo data-cart-count
+*/
+.header__nav-link--cart[data-cart-count]:not([data-cart-count="0"])::after {
+  content: attr(data-cart-count);
+  
+  /* 
+  position: absolute
+  ─────────────────────────────────────────────────────────────────────────────
+  Se posiciona relativo al ancestro con position: relative más cercano.
+  Usamos top/right/bottom/left para ubicarlo.
+  */
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  
+  /* Estilo de badge/pill */
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--spacing-xs);
+  
+  background-color: var(--color-error);
+  color: var(--color-white);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  
+  border-radius: var(--border-radius-full);
+  
+  /* Flexbox para centrar el número */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ELEMENTO: Categorías (barra secundaria) */
+.header__categories {
+  background-color: var(--color-white);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.header__categories-nav {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.header__categories-list {
+  display: flex;
+  gap: var(--spacing-lg);
+  
+  /* 
+  overflow-x: auto → Permite scroll horizontal si no cabe
+  ─────────────────────────────────────────────────────────────────────────────
+  Útil para navegaciones en móvil que tienen muchos items.
+  
+  -webkit-overflow-scrolling: touch → Scroll suave en iOS
+  */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  
+  /* Oculta la barra de scroll pero permite scrollear */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Ocultar scrollbar en Webkit (Chrome, Safari) */
+.header__categories-list::-webkit-scrollbar {
+  display: none;
+}
+
+.header__categories-link {
+  display: block;
+  padding: var(--spacing-sm) 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.header__categories-link:hover {
+  color: var(--color-secondary);
+}
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 8: SECCIONES DE CONTENIDO
+════════════════════════════════════════════════════════════════════════════════
+*/
+
+/* BLOQUE: Hero */
+.hero {
+  /* 
+  Gradiente diagonal con múltiples colores
+  */
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark) 50%,
+    #FFD700 100%
+  );
+  
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  text-align: center;
+}
+
+.hero__container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero__title {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-gray-600);
+  margin-bottom: var(--spacing-sm);
+}
+
+.hero__subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-500);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* 
+.hero__cta: Call To Action (botón de acción)
+═══════════════════════════════════════════════════════════════════════════════
+*/
+.hero__cta {
+  /* 
+  display: inline-block
+  ─────────────────────────────────────────────────────────────────────────────
+  Los enlaces (<a>) son inline por defecto.
+  inline-block permite:
+  - Aplicar width/height
+  - Aplicar padding/margin verticales
+  - Pero sin ocupar toda la línea (como block)
+  */
+  display: inline-block;
+  
+  padding: var(--spacing-md) var(--spacing-xl);
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  border-radius: var(--border-radius-sm);
+  
+  transition: background-color var(--transition-fast),
+              transform var(--transition-fast);
+}
+
+.hero__cta:hover {
+  background-color: var(--color-secondary-dark);
+  transform: translateY(-2px);
+}
+
+.hero__cta:active {
+  transform: translateY(0);
+}
+
+
+/* BLOQUE: Benefits */
+.benefits {
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  background-color: var(--color-white);
+}
+
+.benefits__container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+.benefits__title {
+  text-align: center;
+  font-size: var(--font-size-2xl);
+  color: var(--color-gray-600);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* 
+.benefits__grid: CSS Grid Layout
+════════════════════════════════════════════════════════════════════════════════
+
+GRID vs FLEXBOX:
+- Flexbox: Layout unidimensional (fila O columna)
+- Grid: Layout bidimensional (filas Y columnas)
+
+Grid es ideal para:
+- Layouts de página completa
+- Galerías de imágenes
+- Cualquier diseño en "rejilla"
+
+PROPIEDADES DEL CONTAINER:
+- display: grid                      → Activa grid
+- grid-template-columns              → Define columnas
+- grid-template-rows                 → Define filas
+- gap / row-gap / column-gap         → Espacios
+- grid-template-areas                → Áreas nombradas
+
+PROPIEDADES DE LOS ITEMS:
+- grid-column: start / end           → Posición horizontal
+- grid-row: start / end              → Posición vertical
+- grid-area                          → Área nombrada
+
+UNIDADES ESPECIALES:
+- fr: Fracción del espacio disponible
+- repeat(4, 1fr): Repite 4 veces "1fr"
+- minmax(min, max): Valor entre mínimo y máximo
+- auto-fit: Ajusta automáticamente el número de columnas
+- auto-fill: Similar pero crea columnas vacías si sobra espacio
+*/
+.benefits__grid {
+  display: grid;
+  
+  /* 
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))
+  ─────────────────────────────────────────────────────────────────────────────
+  
+  DESGLOSE:
+  - repeat(): Repite un patrón
+  - auto-fit: Crea tantas columnas como quepan
+  - minmax(250px, 1fr): Cada columna mínimo 250px, máximo 1fr
+  
+  RESULTADO:
+  - En pantallas grandes: 4 columnas de igual tamaño
+  - En pantallas medianas: 2-3 columnas
+  - En móvil: 1 columna
+  
+  ¡RESPONSIVE SIN MEDIA QUERIES!
+  */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  
+  gap: var(--spacing-lg);
+}
+
+.benefits__item {
+  background-color: var(--color-gray-100);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+  
+  transition: transform var(--transition-fast),
+              box-shadow var(--transition-fast);
+}
+
+.benefits__item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.benefits__icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.benefits__item-title {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-600);
+  margin-bottom: var(--spacing-xs);
+}
+
+.benefits__item-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+}
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 9: SECCIÓN DE PRODUCTOS (con estados dinámicos)
+════════════════════════════════════════════════════════════════════════════════
+*/
+
+.products {
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  background-color: var(--color-gray-100);
+}
+
+.products__container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+.products__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* 
+  flex-wrap: wrap
+  ─────────────────────────────────────────────────────────────────────────────
+  Permite que los items se muevan a la siguiente línea si no caben.
+  Sin wrap, los items se comprimirían.
+  */
+  flex-wrap: wrap;
+  
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.products__title {
+  font-size: var(--font-size-2xl);
+  color: var(--color-gray-600);
+}
+
+.products__load-btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  font-weight: 600;
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.products__load-btn:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+.products__load-btn:disabled {
+  /* 
+  Estados disabled
+  ─────────────────────────────────────────────────────────────────────────────
+  opacity: reduce la visibilidad
+  cursor: not-allowed muestra ícono de prohibido
+  */
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Grid de productos */
+.products__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+/* Estado vacío */
+.products__empty-state {
+  /* 
+  grid-column: 1 / -1
+  ─────────────────────────────────────────────────────────────────────────────
+  1 = primera columna
+  -1 = última columna
+  Esto hace que el elemento ocupe TODAS las columnas
+  */
+  grid-column: 1 / -1;
+  
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--color-gray-400);
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  border: 2px dashed var(--color-gray-300);
+}
+
+/* Estado de carga (Loading) */
+.products__loading {
+  grid-column: 1 / -1;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  
+  padding: var(--spacing-2xl);
+  color: var(--color-gray-500);
+}
+
+/* 
+.products__spinner: Animación de carga
+════════════════════════════════════════════════════════════════════════════════
+
+KEYFRAMES: Define los pasos de una animación
+ANIMATION: Aplica la animación a un elemento
+
+PROPIEDADES DE ANIMATION:
+- animation-name: Nombre del keyframe
+- animation-duration: Duración
+- animation-timing-function: Curva de velocidad
+- animation-iteration-count: Repeticiones (infinite = infinito)
+- animation-direction: normal | reverse | alternate
+- animation-fill-mode: Estado antes/después de la animación
+- animation-delay: Retraso inicial
+
+SHORTHAND:
+animation: nombre duración timing iteraciones dirección delay fill;
+*/
+.products__spinner {
+  width: 40px;
+  height: 40px;
+  
+  /* Borde parcial que girará */
+  border: 4px solid var(--color-gray-200);
+  border-top-color: var(--color-secondary);
+  border-radius: var(--border-radius-full);
+  
+  /* 
+  @keyframes spin: Definido más abajo
+  linear: Velocidad constante (importante para spinners)
+  infinite: Se repite indefinidamente
+  */
+  animation: spin 1s linear infinite;
+}
+
+/* 
+@keyframes: Define la animación
+═══════════════════════════════════════════════════════════════════════════════
+
+Puedes usar:
+- from / to: Inicio y fin
+- Porcentajes: 0%, 25%, 50%, 75%, 100%
+*/
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Estado de error */
+.products__error {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--spacing-xl);
+  background-color: #FFF5F5;
+  border: 1px solid var(--color-error);
+  border-radius: var(--border-radius-md);
+}
+
+.products__error-message {
+  color: var(--color-error);
+  margin-bottom: var(--spacing-md);
+}
+
+.products__retry-btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-error);
+  color: var(--color-white);
+  font-weight: 600;
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.products__retry-btn:hover {
+  background-color: #D13545;
+}
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 10: COMPONENTE PRODUCT CARD
+════════════════════════════════════════════════════════════════════════════════
+
+Este es un componente REUTILIZABLE que se genera dinámicamente con TypeScript.
+Diseñado con BEM para ser independiente y modular.
+*/
+
+.product-card {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  
+  /* 
+  overflow: hidden
+  ─────────────────────────────────────────────────────────────────────────────
+  Importante para que la imagen respete el border-radius del contenedor
+  */
+  overflow: hidden;
+  
+  box-shadow: var(--shadow-sm);
+  
+  transition: transform var(--transition-base),
+              box-shadow var(--transition-base);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* 
+Figure para la imagen del producto
+═══════════════════════════════════════════════════════════════════════════════
+*/
+.product-card__figure {
+  /* 
+  aspect-ratio: Proporciona una relación de aspecto
+  ─────────────────────────────────────────────────────────────────────────────
+  aspect-ratio: 16 / 9  → Formato panorámico
+  aspect-ratio: 4 / 3   → Formato clásico
+  aspect-ratio: 1 / 1   → Cuadrado
+  
+  Esto reserva el espacio antes de que cargue la imagen,
+  evitando "layout shift" (saltos de contenido).
+  */
+  aspect-ratio: 4 / 3;
+  
+  overflow: hidden;
+  background-color: var(--color-gray-100);
+}
+
+.product-card__image {
+  width: 100%;
+  height: 100%;
+  
+  /* 
+  object-fit: Cómo la imagen llena su contenedor
+  ─────────────────────────────────────────────────────────────────────────────
+  - fill: Estira (puede distorsionar)
+  - contain: Escala manteniendo proporción (puede dejar espacio)
+  - cover: Escala para llenar (puede recortar)
+  - none: Tamaño original
+  - scale-down: El menor entre none y contain
+  */
+  object-fit: cover;
+  
+  transition: transform var(--transition-base);
+}
+
+/* Zoom suave al hover de la card */
+.product-card:hover .product-card__image {
+  transform: scale(1.05);
+}
+
+.product-card__content {
+  padding: var(--spacing-md);
+}
+
+.product-card__category {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-500);
+  font-size: var(--font-size-xs);
+  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--spacing-sm);
+  
+  /* 
+  text-transform: uppercase
+  ─────────────────────────────────────────────────────────────────────────────
+  Transforma el texto a mayúsculas.
+  Otros valores: lowercase, capitalize, none
+  */
+  text-transform: uppercase;
+  
+  /* 
+  letter-spacing: Espacio entre letras
+  ─────────────────────────────────────────────────────────────────────────────
+  Positivo = más espacio, Negativo = menos espacio
+  Común usar con uppercase para mejor legibilidad
+  */
+  letter-spacing: 0.5px;
+}
+
+.product-card__title {
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--color-gray-600);
+  margin-bottom: var(--spacing-sm);
+  
+  /* 
+  Truncar texto con ellipsis
+  ═══════════════════════════════════════════════════════════════════════════
+  Estas 3 propiedades juntas truncan el texto con "..."
+  */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-card__price {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-gray-600);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Precio verde para envío gratis (estilo ML) */
+.product-card__shipping {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-success);
+  margin-top: var(--spacing-xs);
+}
+
+.product-card__btn {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  font-weight: 600;
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.product-card__btn:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 11: FOOTER
+════════════════════════════════════════════════════════════════════════════════
+*/
+
+.footer {
+  background-color: var(--color-white);
+  padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
+  margin-top: auto; /* Empuja el footer al final si hay poco contenido */
+}
+
+.footer__container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.footer__column-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-gray-600);
+  margin-bottom: var(--spacing-md);
+}
+
+.footer__address {
+  font-style: normal; /* Quita la itálica por defecto de <address> */
+  color: var(--color-gray-500);
+  font-size: var(--font-size-sm);
+  line-height: 1.8;
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.footer__link {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+  transition: color var(--transition-fast);
+}
+
+.footer__link:hover {
+  color: var(--color-secondary);
+}
+
+.footer__social {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.footer__social-link {
+  font-size: var(--font-size-xl);
+  transition: transform var(--transition-fast);
+}
+
+.footer__social-link:hover {
+  transform: scale(1.2);
+}
+
+.footer__divider {
+  border: none;
+  height: 1px;
+  background-color: var(--color-gray-200);
+  margin: var(--spacing-lg) 0;
+}
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.footer__copyright,
+.footer__legal {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+}
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 12: MEDIA QUERIES - DISEÑO RESPONSIVE
+════════════════════════════════════════════════════════════════════════════════
+
+MEDIA QUERIES: Aplican estilos según características del dispositivo.
+
+SINTAXIS:
+@media tipo and (condición) {
+   Estilos 
+}
+TIPOS:
+- all: Todos los dispositivos (default)
+- screen: Pantallas
+- print: Impresión
+
+CONDICIONES COMUNES:
+- min-width: 768px → Desde 768px hacia arriba
+- max-width: 767px → Hasta 767px
+- orientation: portrait/landscape → Orientación
+- prefers-color-scheme: dark → Modo oscuro del sistema
+- prefers-reduced-motion: reduce → Usuario prefiere menos animaciones
+
+BREAKPOINTS COMUNES (Mobile-First):
+- 576px: Small (teléfonos landscape)
+- 768px: Medium (tablets)
+- 992px: Large (laptops)
+- 1200px: Extra Large (desktops)
+
+MOBILE-FIRST vs DESKTOP-FIRST:
+- Mobile-First: Estilos base para móvil, @media (min-width) para agrandar
+- Desktop-First: Estilos base para desktop, @media (max-width) para reducir
+
+Se recomienda MOBILE-FIRST porque:
+1. Móvil es más restrictivo, fuerza diseño eficiente
+2. Mayoría del tráfico web es móvil
+3. Progressive enhancement (mejora progresiva)
+*/
+
+/* 
+═══════════════════════════════════════════════════════════════════════════════
+TABLET Y MENOR (max-width: 768px)
+═══════════════════════════════════════════════════════════════════════════════
+*/
+@media screen and (max-width: 768px) {
+  /* El header se reorganiza en columna */
+  .header__container {
+    flex-wrap: wrap;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  /* Logo más pequeño */
+  .header__logo-text {
+    font-size: var(--font-size-xl);
+  }
+  
+  /* Búsqueda ocupa toda la fila */
+  .header__search {
+    order: 3; /* Reordena el elemento (Flexbox) */
+    flex-basis: 100%;
+    max-width: none;
+    margin-top: var(--spacing-sm);
+  }
+  
+  /* Navegación simplificada */
+  .header__nav-list {
+    gap: var(--spacing-sm);
+  }
+  
+  /* Ocultar texto del carrito, solo ícono */
+  .header__cart-label {
+    /* 
+    Técnica para ocultar visualmente pero mantener accesible
+    (lectores de pantalla aún lo leen)
+    
+    display: none NO es accesible
+    Esta técnica sí lo es:
+    */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
+  /* Hero más compacto */
+  .hero {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+  
+  .hero__title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  /* Footer en columna */
+  .footer__bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* 
+═══════════════════════════════════════════════════════════════════════════════
+MÓVIL PEQUEÑO (max-width: 480px)
+═══════════════════════════════════════════════════════════════════════════════
+*/
+@media screen and (max-width: 480px) {
+  /* Navegación vertical */
+  .header__nav-list {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-xs);
+  }
+  
+  /* Cards ocupan todo el ancho */
+  .products__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Beneficios en columna */
+  .benefits__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 
+═══════════════════════════════════════════════════════════════════════════════
+PREFERENCIAS DEL USUARIO
+═══════════════════════════════════════════════════════════════════════════════
+*/
+
+/* 
+prefers-reduced-motion: Respeta usuarios con sensibilidad al movimiento
+═══════════════════════════════════════════════════════════════════════════════
+Algunos usuarios tienen problemas con animaciones (mareos, distracciones, etc.)
+Esta media query detecta si el usuario ha configurado "reducir movimiento"
+en su sistema operativo.
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* Elimina todas las animaciones y transiciones */
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 
+prefers-color-scheme: Detecta modo oscuro del sistema
+═══════════════════════════════════════════════════════════════════════════════
+(Commented out para simplificar, pero así se implementaría)
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-100: #1a1a1a;
+    --color-gray-600: #f0f0f0;
+    --color-white: #242424;
+    ...
+  }
+}
+*/
+
+
+/* 
+════════════════════════════════════════════════════════════════════════════════
+LECCIÓN 13: UTILIDADES Y CLASES HELPER
+════════════════════════════════════════════════════════════════════════════════
+
+Las clases de utilidad son pequeñas clases de propósito único.
+Frameworks como Tailwind CSS están basados en este concepto.
+*/
+
+/* Visually hidden pero accesible */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Texto centrado */
+.text-center {
+  text-align: center;
+}
+
+/* Margen automático */
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ocultar en ciertos breakpoints */
+@media screen and (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/*
+════════════════════════════════════════════════════════════════════════════════
+FIN DEL TUTORIAL CSS
+════════════════════════════════════════════════════════════════════════════════
+
+RESUMEN DE CONCEPTOS CUBIERTOS:
+1. Selectores (elemento, clase, ID, atributo, pseudo-clases, pseudo-elementos)
+2. Especificidad y cascada
+3. Metodología BEM
+4. Modelo de caja (box model)
+5. Variables CSS (custom properties)
+6. Reset CSS moderno
+7. Flexbox
+8. CSS Grid
+9. Posicionamiento (static, relative, absolute, fixed, sticky)
+10. Transiciones y animaciones
+11. Media queries y diseño responsive
+12. Accesibilidad (focus, reduced motion, visually hidden)
+
+SIGUIENTES PASOS PARA APRENDER:
+- CSS Grid avanzado (grid-template-areas, subgrid)
+- Funciones CSS (calc(), clamp(), min(), max())
+- CSS moderno (container queries, :has(), cascade layers)
+- Metodología CSS-in-JS (styled-components, emotion)
+- Preprocesadores (Sass, Less)
+*/
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.vanilla:hover {
+  filter: drop-shadow(0 0 2em #3178c6aa);
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}

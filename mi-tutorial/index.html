@@ -1,0 +1,826 @@
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    TUTORIAL COMPLETO DE HTML                                   ║
+║                    Web Store Estilo Mercado Libre                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+LECCIÓN 1: ¿QUÉ ES HTML?
+========================
+HTML (HyperText Markup Language) es el lenguaje de marcado estándar para crear
+páginas web. Define la estructura y el contenido de una página mediante "tags"
+(etiquetas).
+
+ESTRUCTURA BÁSICA DE UN DOCUMENTO HTML:
+- <!DOCTYPE html>: Declara que el documento es HTML5
+- <html>: Elemento raíz que contiene todo el documento
+- <head>: Contiene metadatos (información sobre el documento)
+- <body>: Contiene el contenido visible de la página
+
+LECCIÓN 2: TIPOS DE TAGS HTML
+=============================
+Las etiquetas HTML se clasifican en:
+
+1. TAGS DE BLOQUE (Block-level elements):
+   - Ocupan todo el ancho disponible
+   - Siempre empiezan en una nueva línea
+   - Ejemplos: <div>, <p>, <h1>-<h6>, <header>, <main>, <footer>, <section>, <article>, <nav>
+
+2. TAGS EN LÍNEA (Inline elements):
+   - Solo ocupan el espacio necesario
+   - No empiezan en nueva línea
+   - Ejemplos: <span>, <a>, <img>, <strong>, <em>, <button>, <input>
+
+3. TAGS SEMÁNTICOS (Semantic elements) - HTML5:
+   - Dan significado al contenido
+   - Mejoran SEO y accesibilidad
+   - Ejemplos: <header>, <nav>, <main>, <section>, <article>, <aside>, <footer>
+
+4. TAGS VACÍOS (Self-closing/Void elements):
+   - No tienen contenido ni etiqueta de cierre
+   - Ejemplos: <img>, <br>, <hr>, <input>, <meta>, <link>
+
+LECCIÓN 3: ATRIBUTOS HTML
+=========================
+Los atributos proporcionan información adicional sobre los elementos:
+
+- id: Identificador ÚNICO para un elemento (ej: id="header")
+- class: Permite agrupar elementos para estilos CSS (ej: class="producto")
+- src: Especifica la URL de recursos (imágenes, scripts)
+- href: Especifica URLs para enlaces
+- alt: Texto alternativo para imágenes (accesibilidad)
+- type: Tipo de input o button
+- data-*: Atributos personalizados para almacenar datos
+
+LECCIÓN 4: SELECTORES (Para CSS y JavaScript)
+=============================================
+Los selectores permiten "seleccionar" elementos del DOM:
+
+1. Selector de ELEMENTO: selecciona por nombre de tag
+   CSS: header { } | JS: document.querySelector('header')
+
+2. Selector de ID (#): selecciona elemento único
+   CSS: #main-header { } | JS: document.getElementById('main-header')
+   IMPORTANTE: Los IDs deben ser ÚNICOS en el documento
+
+3. Selector de CLASE (.): selecciona múltiples elementos
+   CSS: .producto { } | JS: document.querySelectorAll('.producto')
+
+4. Selectores COMBINADOS:
+   - Descendiente: .container .item { } (item dentro de container)
+   - Hijo directo: .container > .item { } (hijo inmediato)
+   - Hermano adyacente: .item + .item { } (siguiente hermano)
+   - Hermano general: .item ~ .item { } (todos los hermanos siguientes)
+
+5. Selectores de ATRIBUTO:
+   - [type="text"] { } (elementos con ese atributo)
+   - [data-category] { } (elementos que tienen ese atributo)
+
+6. PSEUDO-CLASES (estados):
+   - :hover (cuando el mouse está encima)
+   - :focus (cuando tiene foco)
+   - :first-child, :last-child, :nth-child(n)
+   - :not() (negación)
+
+7. PSEUDO-ELEMENTOS (partes del elemento):
+   - ::before, ::after (contenido antes/después)
+   - ::first-line, ::first-letter
+
+-->
+<!DOCTYPE html>
+<!-- 
+DOCTYPE: Document Type Declaration
+- Le indica al navegador qué versión de HTML estamos usando
+- "html" sin versión significa HTML5 (versión actual)
+- Es OBLIGATORIO y debe ser la primera línea del documento
+-->
+
+<html lang="es">
+<!-- 
+<html>: Elemento RAÍZ del documento
+lang="es": Atributo que indica el idioma del contenido
+- Importante para SEO y lectores de pantalla (accesibilidad)
+- "es" = español, "en" = inglés, "pt" = portugués
+-->
+
+<head>
+  <!-- 
+  ╔═══════════════════════════════════════════════════════════════════════════╗
+  ║                              <HEAD> SECTION                                ║
+  ╠═══════════════════════════════════════════════════════════════════════════╣
+  ║ El <head> contiene METADATOS - información sobre el documento que NO      ║
+  ║ se muestra directamente en la página pero es crucial para:                ║
+  ║ - Configuración del navegador                                              ║
+  ║ - SEO (Search Engine Optimization)                                         ║
+  ║ - Redes sociales (Open Graph, Twitter Cards)                              ║
+  ║ - Rendimiento (preload, prefetch)                                          ║
+  ╚═══════════════════════════════════════════════════════════════════════════╝
+  -->
+
+  <meta charset="UTF-8" />
+  <!-- 
+  META CHARSET: Define la codificación de caracteres
+  - UTF-8: Soporta todos los caracteres del mundo (español, chino, árabe, emojis)
+  - DEBE ser una de las primeras tags del <head>
+  - Sin esto, caracteres como ñ, á, é podrían verse mal
+  -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 
+  META VIEWPORT: Esencial para diseño RESPONSIVE
+  - width=device-width: El ancho de la página = ancho del dispositivo
+  - initial-scale=1.0: Zoom inicial al 100%
+  - Sin esto, los móviles mostrarían la página como en escritorio (muy pequeña)
+  -->
+
+  <meta name="description" content="ML Store - Tu tienda online con los mejores productos. Tutorial educativo de HTML, CSS y TypeScript." />
+  <!-- 
+  META DESCRIPTION: Descripción para motores de búsqueda
+  - Aparece en resultados de Google debajo del título
+  - Ideal: 150-160 caracteres
+  - Debe ser descriptiva y contener palabras clave
+  -->
+
+  <meta name="keywords" content="tienda online, productos, mercado libre, tutorial HTML, tutorial CSS" />
+  <!-- 
+  META KEYWORDS: Palabras clave (menos relevante hoy para SEO)
+  - Google ya no lo usa para ranking
+  - Algunos motores menores aún lo consideran
+  -->
+
+  <title>ML Store | Tu Tienda Online</title>
+  <!-- 
+  <title>: Título del documento
+  - Aparece en la pestaña del navegador
+  - Aparece en resultados de búsqueda de Google
+  - Aparece cuando se guarda como marcador/favorito
+  - Ideal: 50-60 caracteres, incluir marca y palabras clave
+  -->
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- 
+  LINK REL="ICON": Favicon (icono de la pestaña)
+  - Aparece junto al título en la pestaña del navegador
+  - También en marcadores y resultados de búsqueda
+  - Formatos comunes: .ico, .png, .svg
+  -->
+
+  <link rel="stylesheet" href="/src/style.css" />
+  <!-- 
+  LINK REL="STYLESHEET": Vincula una hoja de estilos CSS externa
+  - Separa el contenido (HTML) de la presentación (CSS)
+  - El navegador cachea el CSS, mejorando rendimiento
+  - href: ruta al archivo CSS
+  -->
+
+  <!-- 
+  LINK PRECONNECT: Optimización de rendimiento
+  - Establece conexión temprana con servidores externos
+  - Útil para APIs, CDNs o fuentes externas
+  -->
+  <link rel="preconnect" href="https://api.escuelajs.co" />
+</head>
+
+<body>
+  <!-- 
+  ╔═══════════════════════════════════════════════════════════════════════════╗
+  ║                              <BODY> SECTION                                ║
+  ╠═══════════════════════════════════════════════════════════════════════════╣
+  ║ El <body> contiene TODO el contenido visible de la página:                ║
+  ║ - Texto, imágenes, videos, formularios                                    ║
+  ║ - Estructura semántica (header, main, footer)                              ║
+  ║ - Elementos interactivos (botones, enlaces)                               ║
+  ╚═══════════════════════════════════════════════════════════════════════════╝
+  -->
+
+  <!-- 
+  ════════════════════════════════════════════════════════════════════════════
+  LECCIÓN 5: ELEMENTOS SEMÁNTICOS DE HTML5
+  ════════════════════════════════════════════════════════════════════════════
+  
+  Antes de HTML5, todo se hacía con <div>:
+  <div id="header"></div>
+  <div id="nav"></div>
+  <div id="content"></div>
+  
+  HTML5 introdujo elementos SEMÁNTICOS que dan SIGNIFICADO:
+  - <header>: Encabezado de la página o sección
+  - <nav>: Navegación principal
+  - <main>: Contenido principal (único por página)
+  - <section>: Sección temática del contenido
+  - <article>: Contenido independiente/autocontenido
+  - <aside>: Contenido relacionado pero secundario
+  - <footer>: Pie de página o sección
+  
+  BENEFICIOS:
+  1. SEO: Los buscadores entienden mejor la estructura
+  2. Accesibilidad: Los lectores de pantalla navegan mejor
+  3. Mantenibilidad: Código más legible y organizado
+  -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HEADER: Encabezado principal de la página
+       ═══════════════════════════════════════════════════════════════════════
+       
+       Metodología BEM (Block Element Modifier) para las clases:
+       - Block: Componente independiente (ej: header)
+       - Element: Parte del bloque, usa __ (ej: header__logo)
+       - Modifier: Variación, usa -- (ej: header--sticky)
+       
+       Ejemplo completo: header__nav-link--active
+       - header = bloque
+       - nav-link = elemento del header
+       - active = modificador (estado activo)
+  -->
+  <header class="header" id="main-header">
+    <!-- 
+    <header>: Tag semántica para el encabezado
+    class="header": Clase CSS para estilos (BEM: nombre del bloque)
+    id="main-header": ID único para JavaScript o anclas
+    
+    NOTA SOBRE IDs vs CLASES:
+    - id: ÚNICO en todo el documento, usado para JS o anclas (#main-header)
+    - class: REUTILIZABLE, puede estar en múltiples elementos
+    -->
+
+    <div class="header__container">
+      <!-- 
+      <div>: División genérica (contenedor sin significado semántico)
+      - Útil para agrupar elementos y aplicar estilos
+      - class="header__container": BEM - elemento "container" del bloque "header"
+      -->
+
+      <!-- LOGO: Elemento de marca -->
+      <div class="header__logo">
+        <!-- 
+        <a>: Anchor/Enlace - Crea un hipervínculo
+        href="/": Destino del enlace (/ = página principal)
+        El logo debería SIEMPRE enlazar al inicio
+        -->
+        <a href="/" class="header__logo-link">
+          <!-- 
+          <span>: Elemento inline genérico
+          - No tiene significado semántico
+          - Útil para aplicar estilos a parte del texto
+          -->
+          <span class="header__logo-text">ML</span>
+          <span class="header__logo-subtitle">Store</span>
+        </a>
+      </div>
+
+      <!-- BARRA DE BÚSQUEDA -->
+      <div class="header__search">
+        <!-- 
+        <form>: Formulario HTML
+        - Agrupa elementos de entrada de datos
+        - action: URL donde se envían los datos (no definido = página actual)
+        - method: GET (datos en URL) o POST (datos en cuerpo)
+        -->
+        <form class="header__search-form" action="/buscar" method="GET">
+          <!-- 
+          <input>: Campo de entrada de datos
+          
+          TIPOS COMUNES DE INPUT:
+          - type="text": Texto simple (por defecto)
+          - type="email": Valida formato de email
+          - type="password": Oculta caracteres
+          - type="number": Solo números
+          - type="search": Optimizado para búsqueda
+          - type="checkbox": Casilla de verificación
+          - type="radio": Selección única
+          - type="submit": Botón de envío
+          - type="file": Subir archivos
+          
+          ATRIBUTOS:
+          - placeholder: Texto de ejemplo cuando está vacío
+          - name: Nombre del campo (usado al enviar)
+          - required: Campo obligatorio
+          - id: Para asociar con <label>
+          -->
+          <input 
+            type="search" 
+            class="header__search-input" 
+            placeholder="Buscar productos, marcas y más..." 
+            name="q"
+            id="search-input"
+            autocomplete="off"
+          />
+          
+          <!-- 
+          <button>: Botón clickeable
+          
+          TIPOS DE BUTTON:
+          - type="submit": Envía el formulario (por defecto dentro de <form>)
+          - type="button": No hace nada por defecto (para JS)
+          - type="reset": Limpia el formulario
+          
+          aria-label: Texto para lectores de pantalla (accesibilidad)
+          - Importante cuando el botón solo tiene un ícono
+          -->
+          <button type="submit" class="header__search-button" aria-label="Buscar">
+            <!-- 
+            SVG inline para el ícono de búsqueda
+            - SVG: Scalable Vector Graphics (gráficos vectoriales)
+            - Ventajas: Escalan sin perder calidad, se pueden estilizar con CSS
+            -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- NAVEGACIÓN PRINCIPAL -->
+      <nav class="header__nav">
+        <!-- 
+        <nav>: Elemento semántico para navegación
+        - Indica que contiene enlaces de navegación
+        - Mejora accesibilidad y SEO
+        - Un sitio puede tener múltiples <nav> (principal, pie, breadcrumb)
+        -->
+
+        <!-- 
+        <ul>: Unordered List (lista desordenada)
+        - Para grupos de elementos relacionados
+        - Por defecto muestra bullets (•)
+        
+        <ol>: Ordered List (lista ordenada)
+        - Muestra números (1, 2, 3...)
+        - Útil para pasos o rankings
+        -->
+        <ul class="header__nav-list">
+          <!-- 
+          <li>: List Item (elemento de lista)
+          - DEBE estar dentro de <ul> o <ol>
+          -->
+          <li class="header__nav-item">
+            <a href="#" class="header__nav-link">Crear cuenta</a>
+          </li>
+          <li class="header__nav-item">
+            <a href="#" class="header__nav-link">Ingresar</a>
+          </li>
+          <li class="header__nav-item">
+            <a href="#" class="header__nav-link">Mis compras</a>
+          </li>
+          <li class="header__nav-item">
+            <!-- 
+            Carrito con contador
+            data-cart-count: Atributo personalizado (data-*)
+            - Permite almacenar datos en el HTML
+            - Accesible desde CSS y JavaScript
+            - CSS: [data-cart-count]::after
+            - JS: element.dataset.cartCount
+            -->
+            <a href="#" class="header__nav-link header__nav-link--cart" data-cart-count="0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="8" cy="21" r="1"></circle>
+                <circle cx="19" cy="21" r="1"></circle>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+              </svg>
+              <span class="header__cart-label">Carrito</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- CATEGORÍAS - Navegación secundaria -->
+    <div class="header__categories">
+      <nav class="header__categories-nav">
+        <ul class="header__categories-list">
+          <li class="header__categories-item">
+            <a href="#" class="header__categories-link">Categorías</a>
+          </li>
+          <li class="header__categories-item">
+            <a href="#" class="header__categories-link">Ofertas</a>
+          </li>
+          <li class="header__categories-item">
+            <a href="#" class="header__categories-link">Historial</a>
+          </li>
+          <li class="header__categories-item">
+            <a href="#" class="header__categories-link">Supermercado</a>
+          </li>
+          <li class="header__categories-item">
+            <a href="#" class="header__categories-link">Moda</a>
+          </li>
+          <li class="header__categories-item">
+            <a href="#" class="header__categories-link">Vender</a>
+          </li>
+          <li class="header__categories-item">
+            <a href="#" class="header__categories-link">Ayuda</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       MAIN: Contenido principal de la página
+       ═══════════════════════════════════════════════════════════════════════
+       
+       <main>: Contiene el contenido PRINCIPAL y único de la página
+       - Solo puede haber UN <main> por documento
+       - Excluye contenido que se repite (header, footer, nav)
+       - Importante para accesibilidad (lectores de pantalla saltan aquí)
+  -->
+  <main class="main" id="main-content">
+    
+    <!-- ═════════════════════════════════════════════════════════════════════
+         SECTION: Hero/Banner Principal
+         ═════════════════════════════════════════════════════════════════════
+         
+         <section>: Agrupa contenido temáticamente relacionado
+         - Generalmente tiene un encabezado (<h1>-<h6>)
+         - Representa una sección semántica del documento
+         
+         DIFERENCIA ENTRE SECTION Y DIV:
+         - <section>: Tiene significado semántico, agrupa contenido relacionado
+         - <div>: Sin significado, solo para estilos o agrupación genérica
+    -->
+    <section class="hero" id="hero-section">
+      <div class="hero__container">
+        <!-- 
+        ENCABEZADOS: <h1> a <h6>
+        - <h1>: Título principal (solo UNO por página para SEO)
+        - <h2>: Subtítulos principales
+        - <h3>-<h6>: Subsecciones anidadas
+        
+        JERARQUÍA CORRECTA:
+        h1 > h2 > h3 > h4 (no saltar niveles)
+        INCORRECTO: h1 > h3 (saltamos h2)
+        -->
+        <h1 class="hero__title">Envío gratis desde $299</h1>
+        
+        <!-- 
+        <p>: Párrafo
+        - Elemento de bloque para texto
+        - Navegadores añaden margen arriba y abajo automáticamente
+        -->
+        <p class="hero__subtitle">Aprovecha las mejores ofertas de temporada</p>
+        
+        <a href="#products-section" class="hero__cta">
+          <!-- 
+          href="#products-section": Enlace ANCLA
+          - El # seguido de un ID lleva a ese elemento en la misma página
+          - Útil para navegación interna (tabla de contenidos, "ir arriba")
+          -->
+          Ver productos
+        </a>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         SECTION: Beneficios/Features
+         ═════════════════════════════════════════════════════════════════════
+    -->
+    <section class="benefits" id="benefits-section">
+      <div class="benefits__container">
+        <h2 class="benefits__title">¿Por qué elegirnos?</h2>
+        
+        <!-- 
+        Estructura de grid/lista de beneficios
+        Usamos artículos semánticamente porque cada beneficio
+        es un contenido independiente
+        -->
+        <div class="benefits__grid">
+          <!-- 
+          <article>: Contenido independiente/autocontenido
+          - Podría distribuirse o sindicarse de forma independiente
+          - Ejemplos: post de blog, comentario, producto, noticia
+          - Diferencia con <section>: article es autocontenido
+          -->
+          <article class="benefits__item">
+            <div class="benefits__icon">
+              🚚
+            </div>
+            <!-- 
+            <h3>: Tercer nivel de encabezado
+            - Dentro de <section> con <h2>, usamos <h3> para subsecciones
+            -->
+            <h3 class="benefits__item-title">Envío gratis</h3>
+            <p class="benefits__item-text">En compras mayores a $299</p>
+          </article>
+
+          <article class="benefits__item">
+            <div class="benefits__icon">
+              🔒
+            </div>
+            <h3 class="benefits__item-title">Pago seguro</h3>
+            <p class="benefits__item-text">Todas las transacciones protegidas</p>
+          </article>
+
+          <article class="benefits__item">
+            <div class="benefits__icon">
+              🔄
+            </div>
+            <h3 class="benefits__item-title">Devolución fácil</h3>
+            <p class="benefits__item-text">30 días para devolver tu compra</p>
+          </article>
+
+          <article class="benefits__item">
+            <div class="benefits__icon">
+              💬
+            </div>
+            <h3 class="benefits__item-title">Soporte 24/7</h3>
+            <p class="benefits__item-text">Siempre disponibles para ayudarte</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         SECTION: Catálogo de Productos (Dinámico con TypeScript)
+         ═══════════════════════════════════════════════════════════════════════
+         
+         LECCIÓN 6: INTEGRACIÓN HTML + JAVASCRIPT/TYPESCRIPT
+         ══════════════════════════════════════════════════════════════════════
+         
+         Esta sección demuestra cómo el HTML sirve como "plantilla" que
+         JavaScript/TypeScript manipula dinámicamente:
+         
+         1. Definimos un CONTENEDOR vacío con un ID único
+         2. TypeScript encuentra este contenedor con getElementById
+         3. Hace fetch a la API para obtener datos
+         4. Genera HTML dinámicamente y lo inserta en el contenedor
+         
+         TÉCNICAS DE RENDERIZADO:
+         A) innerHTML: Insertar string de HTML (simple pero cuidado con XSS)
+         B) createElement: Crear elementos uno a uno (más seguro)
+         C) Template literals: Strings con interpolación para generar HTML
+         D) <template>: Elemento HTML5 para plantillas reutilizables
+    -->
+    <section class="products" id="products-section">
+      <div class="products__container">
+        <div class="products__header">
+          <h2 class="products__title">Nuestros Productos</h2>
+          
+          <!-- 
+          BOTÓN DE ACCIÓN: Carga los productos desde la API
+          
+          id="load-products-btn": ID para que TypeScript lo encuentre
+          type="button": Importante para que NO envíe un formulario
+          
+          JavaScript asociará un EVENT LISTENER a este botón:
+          button.addEventListener('click', () => { ... })
+          -->
+          <button 
+            type="button" 
+            class="products__load-btn" 
+            id="load-products-btn"
+          >
+            Cargar Productos
+          </button>
+        </div>
+
+        <!-- 
+        CONTENEDOR DE PRODUCTOS (vacío inicialmente)
+        ══════════════════════════════════════════════════════════════════════
+        
+        id="products-grid": TypeScript usará esto para insertar productos
+        
+        El flujo será:
+        1. Usuario hace clic en "Cargar Productos"
+        2. TypeScript hace fetch('https://api.escuelajs.co/api/v1/products')
+        3. Recibe array de productos en JSON
+        4. Por cada producto, genera una CARD HTML
+        5. Inserta todas las cards dentro de este div
+        
+        ESTRUCTURA DE UNA CARD (generada por TypeScript):
+        ══════════════════════════════════════════════════════════════════════
+        <article class="product-card">
+          <img> - Imagen del producto
+          <div class="product-card__content">
+            <span class="product-card__category"> - Categoría
+            <h3 class="product-card__title"> - Título
+            <p class="product-card__price"> - Precio
+            <button> - Agregar al carrito
+          </div>
+        </article>
+        
+        NOTA: Cada card usa la clase "product-card" siguiendo BEM
+        -->
+        <div class="products__grid" id="products-grid">
+          <!-- 
+          ESTADO INICIAL: Mensaje de instrucciones
+          TypeScript lo reemplazará cuando cargue los productos
+          -->
+          <p class="products__empty-state">
+            Haz clic en "Cargar Productos" para ver el catálogo
+          </p>
+        </div>
+
+        <!-- 
+        INDICADOR DE CARGA (Loading State)
+        ══════════════════════════════════════════════════════════════════════
+        
+        hidden: Atributo HTML5 que oculta el elemento
+        - Más semántico que CSS display:none
+        - TypeScript lo muestra/oculta: element.hidden = true/false
+        
+        aria-live="polite": Accesibilidad
+        - Lectores de pantalla anunciarán cambios en este elemento
+        - "polite": espera a que el usuario termine de interactuar
+        - "assertive": interrumpe inmediatamente
+        -->
+        <div class="products__loading" id="products-loading" hidden aria-live="polite">
+          <div class="products__spinner"></div>
+          <p>Cargando productos...</p>
+        </div>
+
+        <!-- 
+        ESTADO DE ERROR
+        ══════════════════════════════════════════════════════════════════════
+        Se muestra si la API falla
+        -->
+        <div class="products__error" id="products-error" hidden>
+          <p class="products__error-message">
+            Error al cargar productos. Por favor, intenta de nuevo.
+          </p>
+          <button type="button" class="products__retry-btn" id="retry-btn">
+            Reintentar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         TEMPLATE: Plantilla HTML para productos
+         ═══════════════════════════════════════════════════════════════════════
+         
+         LECCIÓN 7: EL ELEMENTO <template>
+         ══════════════════════════════════════════════════════════════════════
+         
+         <template>: Fragmento HTML que NO se renderiza automáticamente
+         
+         CARACTERÍSTICAS:
+         - El contenido está "inerte" (no se ejecutan scripts, no cargan imgs)
+         - No aparece en el DOM visible
+         - Se puede clonar y usar múltiples veces con JavaScript
+         
+         USO EN JAVASCRIPT:
+         const template = document.getElementById('product-card-template');
+         const clone = template.content.cloneNode(true);
+         // Modificar el clon con los datos del producto
+         container.appendChild(clone);
+         
+         VENTAJAS:
+         - Separa la estructura HTML de la lógica JS
+         - Más mantenible que strings de HTML en JavaScript
+         - El navegador valida el HTML al cargar la página
+         
+         NOTA: En este tutorial, usaremos template literals en TypeScript
+         para mostrar esa técnica, pero <template> es una alternativa válida.
+    -->
+    <template id="product-card-template">
+      <article class="product-card">
+        <!-- 
+        <figure>: Contenedor semántico para contenido ilustrativo
+        - Usado para imágenes, diagramas, código, etc.
+        - Puede incluir <figcaption> para descripción
+        -->
+        <figure class="product-card__figure">
+          <!-- 
+          <img>: Elemento de imagen
+          
+          ATRIBUTOS IMPORTANTES:
+          - src: URL de la imagen (OBLIGATORIO)
+          - alt: Texto alternativo (OBLIGATORIO para accesibilidad)
+          - loading="lazy": Carga diferida (no carga hasta que sea visible)
+          - width/height: Dimensiones (previene layout shift)
+          
+          loading="lazy" (Lazy Loading):
+          - Las imágenes fuera del viewport no se cargan inmediatamente
+          - Mejora rendimiento inicial de la página
+          - Soportado nativamente en navegadores modernos
+          -->
+          <img 
+            src="" 
+            alt="" 
+            class="product-card__image"
+            loading="lazy"
+          />
+        </figure>
+        <div class="product-card__content">
+          <span class="product-card__category"></span>
+          <h3 class="product-card__title"></h3>
+          <p class="product-card__price"></p>
+          <button type="button" class="product-card__btn">
+            Agregar al carrito
+          </button>
+        </div>
+      </article>
+    </template>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       FOOTER: Pie de página
+       ═══════════════════════════════════════════════════════════════════════
+       
+       <footer>: Elemento semántico para el pie de página
+       - Generalmente contiene: copyright, enlaces legales, contacto, redes
+       - Puede haber múltiples footers (uno por <section> o <article>)
+       - El footer principal suele ser hijo directo de <body>
+  -->
+  <footer class="footer" id="main-footer">
+    <div class="footer__container">
+      
+      <!-- Grid de columnas del footer -->
+      <div class="footer__grid">
+        
+        <!-- Columna 1: Sobre nosotros -->
+        <div class="footer__column">
+          <h4 class="footer__column-title">Sobre ML Store</h4>
+          <!-- 
+          <address>: Información de contacto
+          - Semánticamente indica datos de contacto
+          - Por defecto se muestra en itálica
+          -->
+          <address class="footer__address">
+            <p>Tu tienda de confianza desde 2024</p>
+            <p>Contacto: soporte@mlstore.com</p>
+          </address>
+        </div>
+
+        <!-- Columna 2: Enlaces -->
+        <div class="footer__column">
+          <h4 class="footer__column-title">Enlaces útiles</h4>
+          <ul class="footer__links">
+            <li><a href="#" class="footer__link">Cómo comprar</a></li>
+            <li><a href="#" class="footer__link">Métodos de pago</a></li>
+            <li><a href="#" class="footer__link">Envíos</a></li>
+            <li><a href="#" class="footer__link">Devoluciones</a></li>
+          </ul>
+        </div>
+
+        <!-- Columna 3: Redes sociales -->
+        <div class="footer__column">
+          <h4 class="footer__column-title">Síguenos</h4>
+          <div class="footer__social">
+            <a href="#" class="footer__social-link" aria-label="Facebook">📘</a>
+            <a href="#" class="footer__social-link" aria-label="Twitter">🐦</a>
+            <a href="#" class="footer__social-link" aria-label="Instagram">📷</a>
+            <a href="#" class="footer__social-link" aria-label="YouTube">▶️</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Línea divisoria -->
+      <!-- 
+      <hr>: Horizontal Rule (línea horizontal)
+      - Representa un cambio temático en el contenido
+      - Elemento vacío (no tiene cierre)
+      -->
+      <hr class="footer__divider" />
+
+      <!-- Copyright -->
+      <div class="footer__bottom">
+        <!-- 
+        <small>: Texto de menor importancia
+        - Generalmente para copyright, disclaimers, letra pequeña
+        - No solo es "texto pequeño" sino semánticamente secundario
+        -->
+        <small class="footer__copyright">
+          &copy; 2024 ML Store. Todos los derechos reservados.
+          <!-- 
+          &copy; : Entidad HTML para el símbolo ©
+          
+          ENTIDADES HTML COMUNES:
+          &amp;   → &
+          &lt;    → <
+          &gt;    → >
+          &nbsp;  → espacio que no se rompe
+          &quot;  → "
+          &apos;  → '
+          &copy;  → ©
+          &reg;   → ®
+          &euro;  → €
+          -->
+        </small>
+        <small class="footer__legal">
+          Este es un proyecto educativo - Tutorial HTML, CSS y TypeScript
+        </small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 
+  ════════════════════════════════════════════════════════════════════════════
+  SCRIPTS: Carga de JavaScript/TypeScript
+  ════════════════════════════════════════════════════════════════════════════
+  
+  UBICACIÓN DE SCRIPTS:
+  - <head>: Con defer o async para no bloquear el render
+  - Final del <body>: Método tradicional, asegura que el DOM existe
+  
+  ATRIBUTOS DE <script>:
+  - type="module": ES Modules (import/export), strict mode automático
+  - defer: Ejecuta después de parsear el HTML (mantiene orden)
+  - async: Ejecuta tan pronto como descargue (no mantiene orden)
+  - src: URL del archivo JavaScript
+  
+  Sin defer/async: Bloquea el parseo del HTML mientras descarga y ejecuta
+  -->
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
